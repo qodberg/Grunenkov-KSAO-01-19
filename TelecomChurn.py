@@ -1,4 +1,3 @@
-# импорт библиотек
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -19,11 +18,11 @@ df['International plan'] = pd.factorize(df['International plan'])[0]
 df['Voice mail plan'] = pd.factorize(df['Voice mail plan'])[0]
 # приведем целевую переменную к числовому виду
 df['Churn'] = df['Churn'].astype('int')
-# отдельно скопируем стобик с названием штата
+# отдельно скопируем столбик с названием штата
 states = df['State']
 # отдельно выделим целевую переменную
 y = df['Churn']
-# удалим из датасета стобцы с названием штата и целевую переменную
+# удалим из датасета столбцы с названием штата и целевую переменную
 df.drop(['State', 'Churn'], axis=1, inplace=True)
 
 # импорт нужных функций
@@ -31,13 +30,13 @@ from sklearn.model_selection import train_test_split, StratifiedKFold
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 
-# разделение на ренировочный и тестовый набор
+# разделение на тренировочный и тестовый набор
 X_train, X_holdout, y_train, y_holdout = train_test_split(df.values, y, test_size=0.3,
 random_state=17)
 
 # создание двух класссификаторов
-tree = DecisionTreeClassifier(max_depth=5, random_state=17)
-knn = KNeighborsClassifier(n_neighbors=10)
+tree = DecisionTreeClassifier(max_depth=4, random_state=17)
+knn = KNeighborsClassifier(n_neighbors=7)
 
 # тренировка моделей
 tree.fit(X_train, y_train)
@@ -46,10 +45,10 @@ knn.fit(X_train, y_train)
 from sklearn.metrics import accuracy_score
 
 tree_pred = tree.predict(X_holdout)
-accuracy_score(y_holdout, tree_pred) # 0.94
+accuracy_score(y_holdout, tree_pred) # 0.92
 
 knn_pred = knn.predict(X_holdout)
-accuracy_score(y_holdout, knn_pred) # 0.88
+accuracy_score(y_holdout, knn_pred) # 0.877
 
 from sklearn.model_selection import GridSearchCV, cross_val_score
 
